@@ -1,0 +1,27 @@
+$size: 50px;
+
+.hero {
+  color: green;
+  width: $size;
+  height: $size;
+  font-size: $size;
+  line-height: $size;
+  text-align: center;
+  vertical-align: middle;
+
+  &.northFacing {
+    transform: rotate(0deg);
+  }
+
+  &.eastFacing {
+    transform: rotate(90deg);
+  }
+
+  &.westFacing {
+    transform: rotate(-90deg);
+  }
+
+  &.southFacing {
+    transform: rotate(180deg);
+  }
+}
