@@ -64,21 +64,5 @@ update msg model =
 
 view : Model -> Html a
 view model =
-    div [ class ("hero " ++ directionClass model.direction) ]
+    div [ class ("hero facing" ++ toString model.direction) ]
         [ text "☺" ]
-
-
-directionClass : Direction -> String
-directionClass direction =
-    case direction of
-        North ->
-            "northFacing"
-
-        East ->
-            "eastFacing"
-
-        South ->
-            "southFacing"
-
-        West ->
-            "westFacing"

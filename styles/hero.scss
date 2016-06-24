@@ -9,19 +9,19 @@ $size: 50px;
   text-align: center;
   vertical-align: middle;
 
-  &.northFacing {
+  &.facingNorth {
     transform: rotate(0deg);
   }
 
-  &.eastFacing {
+  &.facingEast {
     transform: rotate(90deg);
   }
 
-  &.westFacing {
+  &.facingWest {
     transform: rotate(-90deg);
   }
 
-  &.southFacing {
+  &.facingSouth {
     transform: rotate(180deg);
   }
 }
