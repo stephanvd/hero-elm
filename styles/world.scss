@@ -1,0 +1,23 @@
+@import './variables.scss';
+
+.world {
+  position: absolute;
+
+  .row {
+    clear: both;
+
+    .col {
+      height: $tileSize;
+      width: $tileSize;
+      float: left;
+
+      &.grass {
+        background-color: #008800;
+      }
+
+      &.water {
+        background-color: #000088;
+      }
+    }
+  }
+}

@@ -2,8 +2,8 @@ module Hero exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Keyboard exposing (KeyCode)
-import Char exposing (fromCode)
+import Keyboard
+import Char
 
 
 -- MODEL
@@ -31,7 +31,7 @@ init =
 
 type Msg
     = NoOp
-    | KeyPress KeyCode
+    | KeyPress Keyboard.KeyCode
 
 
 update : Msg -> Model -> Model
@@ -41,7 +41,7 @@ update msg model =
             model
 
         KeyPress keyCode ->
-            case fromCode keyCode of
+            case Char.fromCode keyCode of
                 'w' ->
                     { model | direction = North }
 

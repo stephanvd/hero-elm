@@ -1,6 +1,16 @@
-$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
-@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+@import './reset.scss';
 
-// can add Boostrap overrides, additional Sass/CSS below...
 @import './hero.scss';
+@import './world.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+
+  width: 500px;
+  height: 500px;
+  margin: 20px auto;
+}

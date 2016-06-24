@@ -1,11 +1,15 @@
-$size: 50px;
+@import './variables.scss';
 
 .hero {
-  color: green;
-  width: $size;
-  height: $size;
-  font-size: $size;
-  line-height: $size;
+  position: absolute;
+  top: $tileSize * 2;
+  left: $tileSize * 2;
+
+  color: white;
+  width: $tileSize;
+  height: $tileSize;
+  font-size: $tileSize;
+  line-height: $tileSize;
   text-align: center;
   vertical-align: middle;
 

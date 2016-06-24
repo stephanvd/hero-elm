@@ -3,9 +3,9 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.App as Html
-import Html.Events exposing (onClick)
 import Keyboard
 import Hero
+import World
 
 
 -- APP
@@ -28,6 +28,7 @@ main =
 type alias Model =
     { counter : Int
     , hero : Hero.Model
+    , world : World.Model
     }
 
 
@@ -35,6 +36,7 @@ init : ( Model, Cmd Msg )
 init =
     ( { counter = 0
       , hero = Hero.init
+      , world = World.init
       }
     , Cmd.none
     )
@@ -78,6 +80,9 @@ subscriptions model =
 -- VIEW
 
 
-view : Model -> Html Msg
+view : Model -> Html a
 view model =
-    Hero.view model.hero
+    div [ class "container" ]
+        [ World.view model.world
+        , Hero.view model.hero
+        ]
