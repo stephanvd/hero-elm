@@ -26,16 +26,14 @@ main =
 
 
 type alias Model =
-    { counter : Int
-    , hero : Hero.Model
+    { hero : Hero.Model
     , world : World.Model
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { counter = 0
-      , hero = Hero.init
+    ( { hero = Hero.init
       , world = World.init
       }
     , Cmd.none
@@ -48,7 +46,6 @@ init =
 
 type Msg
     = NoOp
-    | Increment
     | KeyPress Keyboard.KeyCode
 
 
@@ -59,10 +56,12 @@ update msg model =
             ( model, Cmd.none )
 
         KeyPress keyCode ->
-            ( { model | hero = (Hero.update (Hero.KeyPress keyCode) model.hero) }, Cmd.none )
-
-        Increment ->
-            ( { model | counter = model.counter + 1 }, Cmd.none )
+            ( { model
+                | hero = (Hero.update (Hero.KeyPress keyCode) model.hero)
+                , world = (World.update (World.KeyPress keyCode) model.world)
+              }
+            , Cmd.none
+            )
 
 
 
@@ -85,4 +84,5 @@ view model =
     div [ class "container" ]
         [ World.view model.world
         , Hero.view model.hero
+        , div [ class "debug-model" ] [ text (toString model) ]
         ]

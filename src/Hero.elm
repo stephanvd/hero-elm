@@ -16,13 +16,20 @@ type Direction
     | West
 
 
+type Status
+    = Living
+    | Dead
+
+
 type alias Model =
-    { direction : Direction }
+    { direction : Direction
+    , status : Status
+    }
 
 
 init : Model
 init =
-    { direction = North }
+    { direction = North, status = Living }
 
 
 
@@ -32,6 +39,7 @@ init =
 type Msg
     = NoOp
     | KeyPress Keyboard.KeyCode
+    | Dies
 
 
 update : Msg -> Model -> Model
@@ -56,6 +64,9 @@ update msg model =
 
                 _ ->
                     model
+
+        Dies ->
+            { model | status = Dead }
 
 
 
