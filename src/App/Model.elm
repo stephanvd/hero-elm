@@ -2,19 +2,19 @@ module App.Model exposing (..)
 
 import App.Msg exposing (Msg)
 import Hero
-import World
+import Map.Model
 
 
 type alias Model =
     { hero : Hero.Model
-    , world : World.Model
+    , map : Map.Model.Model
     }
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { hero = Hero.init
-      , world = World.init
+      , map = Map.Model.init
       }
     , Cmd.none
     )

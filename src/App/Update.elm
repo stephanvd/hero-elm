@@ -3,7 +3,7 @@ module App.Update exposing (..)
 import App.Model exposing (..)
 import App.Msg exposing (..)
 import Hero
-import World
+import Map.Update
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -15,7 +15,7 @@ update msg model =
         KeyPress keyCode ->
             ( { model
                 | hero = (Hero.update (Hero.KeyPress keyCode) model.hero)
-                , world = (World.update (World.KeyPress keyCode) model.world)
+                , map = (Map.Update.update (Map.Update.KeyPress keyCode) model.map)
               }
             , Cmd.none
             )
