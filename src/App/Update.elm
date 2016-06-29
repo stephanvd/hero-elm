@@ -15,7 +15,7 @@ update msg model =
         KeyPress keyCode ->
             ( { model
                 | hero = (Hero.update (Hero.KeyPress keyCode) model.hero)
-                , map = (Map.Update.update (Map.Update.KeyPress keyCode) model.map)
+                , map = (Map.Update.update (KeyPress keyCode) model.map)
               }
             , Cmd.none
             )

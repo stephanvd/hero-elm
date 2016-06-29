@@ -1,16 +1,8 @@
 module Map.Update exposing (..)
 
-import Keyboard
 import Char
 import Map.Model exposing (..)
-
-
--- UPDATE
-
-
-type Msg
-    = NoOp
-    | KeyPress Keyboard.KeyCode
+import App.Msg exposing (..)
 
 
 update : Msg -> Model -> Model
