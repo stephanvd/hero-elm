@@ -2,8 +2,8 @@ module Hero exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Keyboard
-import Char
+import App.Msg exposing (..)
+import Keypress
 
 
 -- MODEL
@@ -36,37 +36,23 @@ init =
 -- UPDATE
 
 
-type Msg
-    = NoOp
-    | KeyPress Keyboard.KeyCode
-    | Dies
+update : Msg -> Keypress.Model -> Model -> Model
+update msg keys model =
+    model |> (updateMovement keys)
 
 
-update : Msg -> Model -> Model
-update msg model =
-    case msg of
-        NoOp ->
-            model
-
-        KeyPress keyCode ->
-            case Char.fromCode keyCode of
-                'w' ->
-                    { model | direction = North }
-
-                'a' ->
-                    { model | direction = West }
-
-                's' ->
-                    { model | direction = South }
-
-                'd' ->
-                    { model | direction = East }
-
-                _ ->
-                    model
-
-        Dies ->
-            { model | status = Dead }
+updateMovement : Keypress.Model -> Model -> Model
+updateMovement keys model =
+    if List.member MoveRight keys then
+        { model | direction = East }
+    else if List.member MoveLeft keys then
+        { model | direction = West }
+    else if List.member MoveUp keys then
+        { model | direction = North }
+    else if List.member MoveDown keys then
+        { model | direction = South }
+    else
+        model
 
 
 
