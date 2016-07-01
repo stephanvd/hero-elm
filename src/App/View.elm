@@ -10,7 +10,8 @@ import Hero
 view : Model -> Html a
 view model =
     div [ class "container" ]
-        [ Map.View.view model.map
-        , Hero.view model.hero
-        , div [ class "debug-model" ] [ text (toString model) ]
+        [ -- div [ class "debug-model" ] [ text (toString model) ]
+          --,
+          Map.View.view model.map
+          -- , Hero.view model.hero
         ]

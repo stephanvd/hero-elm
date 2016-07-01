@@ -1,27 +1,20 @@
 @import './variables.scss';
 
+$size: 64px;
+$tiles: 8;
+
 .map {
-  position: absolute;
+  width: $size * $tiles;
+  height: $size * $tiles;
 
   .row {
-    clear: both;
+    width: $size * $tiles;
+    height: $size;
 
-    .col {
-      height: $tileSize;
-      width: $tileSize;
-      float: left;
+    .tile {
+      width: $size;
+      height: $size;
 
-      &.grass {
-        background-color: #008800;
-      }
-
-      &.water {
-        background-color: #000088;
-      }
-
-      &.rock {
-        background-color: #888888;
-      }
     }
   }
 }
