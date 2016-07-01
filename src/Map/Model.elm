@@ -1,51 +1,79 @@
 module Map.Model exposing (..)
 
-
-type alias Position =
-    { x : Int
-    , y : Int
-    }
-
-
-type alias Tile =
-    String
-
-
-type alias Grid =
-    List (List Tile)
+import Tile
 
 
 type alias Model =
-    { grid : Grid
-    , center : Position
-    }
+    List (List Tile.Kind)
 
 
-g : Tile
+
+-- Layer 0
+
+
+g : Tile.Kind
 g =
-    "grass"
+    Tile.Grass
 
 
-w : Tile
-w =
-    "water"
+m : Tile.Kind
+m =
+    Tile.Mud
 
 
-r : Tile
-r =
-    "rock"
+t : Tile.Kind
+t =
+    Tile.Tree
 
 
-init : Model
-init =
-    { grid =
-        [ [ g, g, g, r, g, g, g, g, w, w, w, g, g, g ]
-        , [ g, g, g, r, g, g, g, w, w, w, w, w, g, g ]
-        , [ g, w, g, g, g, g, g, w, w, w, w, w, w, g ]
-        , [ w, w, g, g, g, g, g, g, g, g, g, g, g, r ]
-        , [ w, w, w, g, g, r, r, w, w, w, g, r, r, r ]
-        , [ w, w, w, g, g, r, r, w, w, w, g, r, r, r ]
-        , [ w, w, g, g, g, g, g, w, w, g, g, g, g, r ]
-        ]
-    , center = { x = 3, y = 3 }
-    }
+
+-- Layer 1
+
+
+b : Tile.Kind
+b =
+    Tile.Bush
+
+
+o : Tile.Kind
+o =
+    Tile.TreeTop
+
+
+
+-- Init
+
+
+layer0 : Model
+layer0 =
+    [ [ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
+    , [ g, g, t, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
+    , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
+    , [ g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
+    , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
+    , [ g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
+    , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g ]
+    ]
+
+
+layer1 : Model
+layer1 =
+    [ []
+    , []
+    , [ b, b, o ]
+    ]

@@ -1,52 +1,46 @@
 module Tile exposing (..)
 
-import Html exposing (Html)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 
 type Kind
     = Grass
-    | Water
-    | Rock
     | Mud
+    | Tree
+    | TreeTop
+    | Bush
 
 
 type alias Model =
     { kind : Kind
-    , offsetX : Int
+    , rowIndex : Int
+    , colIndex : Int
     }
 
 
-init : Kind -> Model
-init kind =
-    case kind of
-        Grass ->
-            { kind = Grass, offsetX = 0 }
-
-        Mud ->
-            { kind = Grass, offsetX = -64 }
-
-        _ ->
-            { kind = Grass, offsetX = 0 }
+init : Kind -> Int -> Int -> Model
+init kind colIndex rowIndex =
+    { kind = kind
+    , rowIndex = rowIndex
+    , colIndex = colIndex
+    }
 
 
 view : Model -> Html a
 view model =
-    svg
+    div
         [ class "tile"
-        , version "1.1"
-        , width "64"
-        , height "64"
-        , x "64"
-        , y "0"
+        , style
+            [ ( "top", (toString (model.colIndex * 64)) ++ "px" )
+            , ( "left", (toString (model.rowIndex * 64)) ++ "px" )
+            ]
         ]
-        [ image
-            [ xlinkHref "/img/tiles.png"
-            , x (toString model.offsetX)
-            , y "0"
-            , width "320"
-            , height "64"
+        [ img
+            [ src "/img/tiles.png"
+            , width 320
+            , height 64
+            , class (toString model.kind)
             ]
             []
         ]

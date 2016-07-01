@@ -8,50 +8,30 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 
 
-g =
-    Tile.Grass
-
-
-m =
-    Tile.Mud
-
-
-init =
-    [ [ g, g, g, g, g, g, g, g ]
-    , [ g, m, g, g, g, g, g, g ]
-    , [ g, g, g, g, g, m, m, m ]
-    , [ g, g, g, m, m, m, m, m ]
-    , [ g, g, g, m, g, g, m, m ]
-    , [ g, g, g, g, g, g, g, g ]
-    , [ g, m, g, g, g, g, g, g ]
-    , [ g, m, m, g, g, g, g, g ]
-    ]
-
-
-
 -- VIEW
 
 
 view : Model -> Html.Html a
 view _ =
-    let
-        model =
-            init
-    in
-        div [ class "map" ]
-            (viewRow model)
+    div [ class "map" ]
+        [ div [ class "layer0" ]
+            (layer0
+                |> List.indexedMap viewRow
+                |> List.concatMap (\x -> x)
+            )
+        , div [ class "layer1" ]
+            (layer1
+                |> List.indexedMap viewRow
+                |> List.concatMap (\x -> x)
+            )
+        ]
 
 
-viewRow model =
-    (List.map
-        (\row ->
-            div [ class "row" ]
-                (List.map
-                    (\col ->
-                        Tile.view (Tile.init col)
-                    )
-                    row
-                )
-        )
-        model
-    )
+viewRow : Int -> List Tile.Kind -> List (Html.Html a)
+viewRow rowIndex row =
+    row |> List.indexedMap (viewTile rowIndex)
+
+
+viewTile : Int -> Int -> Tile.Kind -> Html.Html a
+viewTile rowIndex colIndex tile =
+    Tile.view (Tile.init tile rowIndex colIndex)

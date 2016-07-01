@@ -1,20 +1,30 @@
 @import './variables.scss';
 
-$size: 64px;
-$tiles: 8;
-
 .map {
-  width: $size * $tiles;
-  height: $size * $tiles;
+  position: relative;
+  width: 100%;
+  height: 100%;
 
-  .row {
-    width: $size * $tiles;
-    height: $size;
+  .tile {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
 
-    .tile {
-      width: $size;
-      height: $size;
+    img {
+      position: absolute;
+      user-drag: none;
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
 
+      &.Grass { left: 0; }
+      &.Mud { left: -64px; }
+      &.Tree { left: -128px; }
+      &.TreeTop { left: -192px; }
+      &.Bush { left: -256px; }
     }
   }
 }

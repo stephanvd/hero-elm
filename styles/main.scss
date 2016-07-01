@@ -5,6 +5,8 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -13,10 +15,6 @@ body {
 
 .container {
   position: relative;
-
-  width: 512px;
-  height: 512px;
-  margin: 20px auto;
 }
 
 .debug-model {
