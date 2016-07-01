@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import App.Msg exposing (..)
 import Map.View as Map
+import Map.Model
 import Keypress
 
 
@@ -54,7 +55,9 @@ moveLeft keys model =
 
 moveRight : Keypress.Model -> Model -> Model
 moveRight keys model =
-    if List.member MoveRight keys then
+    if (model.x + halfWidth) >= Map.Model.width then
+        { model | x = Map.Model.width - halfWidth }
+    else if List.member MoveRight keys then
         { model | x = model.x + constants.speed }
     else
         model
@@ -72,7 +75,9 @@ moveUp keys model =
 
 moveDown : Keypress.Model -> Model -> Model
 moveDown keys model =
-    if List.member MoveDown keys then
+    if (model.y + halfHeight) >= Map.Model.height then
+        { model | y = Map.Model.height - halfHeight }
+    else if List.member MoveDown keys then
         { model | y = model.y + constants.speed }
     else
         model

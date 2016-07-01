@@ -77,3 +77,19 @@ layer1 =
     , []
     , [ b, b, o ]
     ]
+
+
+
+-- Util
+
+
+height =
+    64 * (List.length layer0)
+
+
+width =
+    64
+        * ((List.head layer0)
+            |> Maybe.withDefault []
+            |> List.length
+          )
