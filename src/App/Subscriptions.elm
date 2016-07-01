@@ -9,7 +9,7 @@ import App.Msg exposing (..)
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Time.every (Time.millisecond * 100) Tick
+        [ Time.every (Time.millisecond * 16.67) Tick
         , Keyboard.downs KeyDown
         , Keyboard.ups KeyUp
         ]

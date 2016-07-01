@@ -62,4 +62,10 @@ updateMovement keys model =
 view : Model -> Html a
 view model =
     div [ class ("hero facing" ++ toString model.direction) ]
-        [ text "☺" ]
+        [ img
+            [ src "/img/character.png"
+            , width 64
+            , height 64
+            ]
+            []
+        ]

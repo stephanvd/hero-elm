@@ -1,7 +1,5 @@
 module Map.View exposing (..)
 
-import Keyboard exposing (KeyCode)
-import Char exposing (fromCode)
 import Map.Model exposing (..)
 import Tile
 import Html exposing (..)
@@ -11,20 +9,27 @@ import Html.Attributes exposing (..)
 -- VIEW
 
 
-view : Model -> Html.Html a
-view _ =
-    div [ class "map" ]
-        [ div [ class "layer0" ]
-            (layer0
-                |> List.indexedMap viewRow
-                |> List.concatMap (\x -> x)
-            )
-        , div [ class "layer1" ]
-            (layer1
-                |> List.indexedMap viewRow
-                |> List.concatMap (\x -> x)
-            )
+view : Int -> Int -> Html.Html a
+view offsetX offsetY =
+    div
+        [ class "map"
+        , style
+            [ ( "left", (toString -offsetX) ++ "px" )
+            , ( "top", (toString -offsetY) ++ "px" )
+            ]
         ]
+        [ (viewLayer layer0 offsetX offsetY)
+        , (viewLayer layer1 offsetX offsetY)
+        ]
+
+
+viewLayer : Model -> Int -> Int -> Html.Html a
+viewLayer model offsetX offsetY =
+    div []
+        (model
+            |> List.indexedMap viewRow
+            |> List.concatMap (\x -> x)
+        )
 
 
 viewRow : Int -> List Tile.Kind -> List (Html.Html a)
