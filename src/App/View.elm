@@ -11,6 +11,5 @@ view : Model -> Html a
 view model =
     div []
         [ div [ class "debug-model" ] [ text (toString model) ]
-        , Camera.view model.camera
-        , Hero.view model.hero
+        , Camera.view model.camera model.hero
         ]

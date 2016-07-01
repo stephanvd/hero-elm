@@ -4,13 +4,23 @@ import Map.Model exposing (..)
 import Tile
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Hero
 
 
 -- VIEW
 
 
-view : Int -> Int -> Html.Html a
-view offsetX offsetY =
+view : Int -> Int -> Hero.Model -> Html.Html a
+view offsetX offsetY hero =
+    div []
+        [ viewLayer layer0 offsetX offsetY
+        , Hero.view hero
+        , viewLayer layer1 offsetX offsetY
+        ]
+
+
+viewLayer : Model -> Int -> Int -> Html.Html a
+viewLayer model offsetX offsetY =
     div
         [ class "map"
         , style
@@ -18,14 +28,6 @@ view offsetX offsetY =
             , ( "top", (toString -offsetY) ++ "px" )
             ]
         ]
-        [ (viewLayer layer0 offsetX offsetY)
-        , (viewLayer layer1 offsetX offsetY)
-        ]
-
-
-viewLayer : Model -> Int -> Int -> Html.Html a
-viewLayer model offsetX offsetY =
-    div []
         (model
             |> List.indexedMap viewRow
             |> List.concatMap (\x -> x)

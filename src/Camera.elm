@@ -7,6 +7,8 @@ import Map.View as Map
 import Map.Model
 import Keypress
 import Hero
+import Tile
+import Array
 
 
 constants : { width : Int, height : Int, speed : Int }
@@ -27,11 +29,14 @@ init =
 
 update : Msg -> Keypress.Model -> Model -> Model
 update msg keys model =
-    model
-        |> moveLeft keys
-        |> moveRight keys
-        |> moveUp keys
-        |> moveDown keys
+    if (detectCollision model) then
+        model
+    else
+        model
+            |> moveLeft keys
+            |> moveRight keys
+            |> moveUp keys
+            |> moveDown keys
 
 
 halfWidth : Int
@@ -92,8 +97,63 @@ moveDown keys model =
             model
 
 
-view : Model -> Html a
-view model =
+detectCollision : Model -> Bool
+detectCollision model =
+    let
+        xStart =
+            model.x - 1
+
+        xEnd =
+            model.x + (.width Hero.constants) + 1
+
+        yStart =
+            model.y - 1
+
+        yEnd =
+            model.y + (.height Hero.constants)
+
+        leftTop =
+            (pinpointTile xStart yStart)
+
+        rightTop =
+            (pinpointTile xEnd yEnd)
+
+        leftBottom =
+            (pinpointTile xStart yEnd)
+
+        rightBottom =
+            (pinpointTile xEnd yEnd)
+    in
+        (Tile.isSolid leftTop)
+            || (Tile.isSolid rightTop)
+            || (Tile.isSolid leftBottom)
+            || (Tile.isSolid rightBottom)
+
+
+pinpointTile : Int -> Int -> Tile.Kind
+pinpointTile x y =
+    let
+        yCount =
+            y // 64
+
+        row =
+            Array.get yCount (Array.fromList Map.Model.layer0)
+
+        xCount =
+            x // 64
+
+        tile =
+            Array.get xCount
+                (row
+                    |> Maybe.withDefault []
+                    |> Array.fromList
+                )
+    in
+        tile |> Maybe.withDefault Tile.Grass
+
+
+view : Model -> Hero.Model -> Html a
+view model hero =
     let
         mapX =
             (model.x - halfWidth + Hero.halfWidth)
@@ -108,4 +168,5 @@ view model =
                 , ( "height", toString <| constants.height )
                 ]
             ]
-            [ Map.view mapX mapY ]
+            [ Map.view mapX mapY hero
+            ]
