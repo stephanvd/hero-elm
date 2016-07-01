@@ -6,6 +6,25 @@ import App.Msg exposing (..)
 import Keypress
 
 
+-- UTILS
+
+
+constants : { width : Int, height : Int }
+constants =
+    { width = 64, height = 64 }
+
+
+halfWidth : Int
+halfWidth =
+    (constants.width // 2)
+
+
+halfHeight : Int
+halfHeight =
+    (constants.height // 2)
+
+
+
 -- MODEL
 
 
@@ -64,8 +83,8 @@ view model =
     div [ class ("hero facing" ++ toString model.direction) ]
         [ img
             [ src "/img/character.png"
-            , width 64
-            , height 64
+            , width constants.width
+            , height constants.height
             ]
             []
         ]

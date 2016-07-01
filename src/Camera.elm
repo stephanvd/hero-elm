@@ -6,6 +6,7 @@ import App.Msg exposing (..)
 import Map.View as Map
 import Map.Model
 import Keypress
+import Hero
 
 
 constants : { width : Int, height : Int, speed : Int }
@@ -21,7 +22,7 @@ type alias Model =
 
 init : Model
 init =
-    { x = 0, y = 0 }
+    { x = halfWidth, y = halfHeight }
 
 
 update : Msg -> Keypress.Model -> Model -> Model
@@ -45,51 +46,66 @@ halfHeight =
 
 moveLeft : Keypress.Model -> Model -> Model
 moveLeft keys model =
-    if (model.x + halfWidth) < 1 then
-        { model | x = -halfWidth }
-    else if List.member MoveLeft keys then
-        { model | x = model.x - constants.speed }
-    else
-        model
-
-
-moveRight : Keypress.Model -> Model -> Model
-moveRight keys model =
-    if (model.x + halfWidth) >= Map.Model.width then
-        { model | x = Map.Model.width - halfWidth }
-    else if List.member MoveRight keys then
-        { model | x = model.x + constants.speed }
-    else
-        model
+    let
+        move =
+            (model.x > 0) && (List.member MoveLeft keys)
+    in
+        if move then
+            { model | x = model.x - constants.speed }
+        else
+            model
 
 
 moveUp : Keypress.Model -> Model -> Model
 moveUp keys model =
-    if (model.y + halfHeight) < 1 then
-        { model | y = -halfHeight }
-    else if List.member MoveUp keys then
-        { model | y = model.y - constants.speed }
-    else
-        model
+    let
+        move =
+            (model.y > 0) && (List.member MoveUp keys)
+    in
+        if move then
+            { model | y = model.y - constants.speed }
+        else
+            model
+
+
+moveRight : Keypress.Model -> Model -> Model
+moveRight keys model =
+    let
+        move =
+            (model.x < Map.Model.width - (.width Hero.constants)) && (List.member MoveRight keys)
+    in
+        if move then
+            { model | x = model.x + constants.speed }
+        else
+            model
 
 
 moveDown : Keypress.Model -> Model -> Model
 moveDown keys model =
-    if (model.y + halfHeight) >= Map.Model.height then
-        { model | y = Map.Model.height - halfHeight }
-    else if List.member MoveDown keys then
-        { model | y = model.y + constants.speed }
-    else
-        model
+    let
+        move =
+            (model.y < Map.Model.height - (.height Hero.constants)) && (List.member MoveDown keys)
+    in
+        if move then
+            { model | y = model.y + constants.speed }
+        else
+            model
 
 
 view : Model -> Html a
 view model =
-    div
-        [ class "camera"
-        , style
-            [ ( "width", toString <| constants.width )
-            , ( "height", toString <| constants.height )
+    let
+        mapX =
+            (model.x - halfWidth + Hero.halfWidth)
+
+        mapY =
+            (model.y - halfHeight + Hero.halfHeight)
+    in
+        div
+            [ class "camera"
+            , style
+                [ ( "width", toString <| constants.width )
+                , ( "height", toString <| constants.height )
+                ]
             ]
-        ]
-        [ Map.view model.x model.y ]
+            [ Map.view mapX mapY ]
