@@ -29,14 +29,11 @@ init =
 
 update : Msg -> Keypress.Model -> Model -> Model
 update msg keys model =
-    if (detectCollision model) then
-        model
-    else
-        model
-            |> moveLeft keys
-            |> moveRight keys
-            |> moveUp keys
-            |> moveDown keys
+    model
+        |> moveLeft keys
+        |> moveRight keys
+        |> moveUp keys
+        |> moveDown keys
 
 
 halfWidth : Int
@@ -53,7 +50,9 @@ moveLeft : Keypress.Model -> Model -> Model
 moveLeft keys model =
     let
         move =
-            (model.x > 0) && (List.member MoveLeft keys)
+            (model.x > 0)
+                && (List.member MoveLeft keys)
+                && not (detectLeftCollision model)
     in
         if move then
             { model | x = model.x - constants.speed }
@@ -65,7 +64,9 @@ moveUp : Keypress.Model -> Model -> Model
 moveUp keys model =
     let
         move =
-            (model.y > 0) && (List.member MoveUp keys)
+            (model.y > 0)
+                && (List.member MoveUp keys)
+                && not (detectTopCollision model)
     in
         if move then
             { model | y = model.y - constants.speed }
@@ -77,7 +78,9 @@ moveRight : Keypress.Model -> Model -> Model
 moveRight keys model =
     let
         move =
-            (model.x < Map.Model.width - (.width Hero.constants)) && (List.member MoveRight keys)
+            (model.x < Map.Model.width - (.width Hero.constants))
+                && (List.member MoveRight keys)
+                && not (detectRightCollision model)
     in
         if move then
             { model | x = model.x + constants.speed }
@@ -89,7 +92,9 @@ moveDown : Keypress.Model -> Model -> Model
 moveDown keys model =
     let
         move =
-            (model.y < Map.Model.height - (.height Hero.constants)) && (List.member MoveDown keys)
+            (model.y < Map.Model.height - (.height Hero.constants))
+                && (List.member MoveDown keys)
+                && not (detectBottomCollision model)
     in
         if move then
             { model | y = model.y + constants.speed }
@@ -97,37 +102,44 @@ moveDown keys model =
             model
 
 
-detectCollision : Model -> Bool
-detectCollision model =
-    let
-        xStart =
-            model.x - 1
+detectLeftCollision : Model -> Bool
+detectLeftCollision model =
+    Tile.isSolid (pinpointTile (heroXStart model) (heroYStart model))
+        || Tile.isSolid (pinpointTile (heroXStart model) (heroYEnd model))
 
-        xEnd =
-            model.x + (.width Hero.constants) + 1
 
-        yStart =
-            model.y - 1
+detectRightCollision : Model -> Bool
+detectRightCollision model =
+    Tile.isSolid (pinpointTile (heroXEnd model) (heroYStart model))
+        || Tile.isSolid (pinpointTile (heroXEnd model) (heroYEnd model))
 
-        yEnd =
-            model.y + (.height Hero.constants)
 
-        leftTop =
-            (pinpointTile xStart yStart)
+detectTopCollision : Model -> Bool
+detectTopCollision model =
+    Tile.isSolid (pinpointTile (heroXStart model) (heroYStart model))
+        || Tile.isSolid (pinpointTile (heroXEnd model) (heroYStart model))
 
-        rightTop =
-            (pinpointTile xEnd yEnd)
 
-        leftBottom =
-            (pinpointTile xStart yEnd)
+detectBottomCollision : Model -> Bool
+detectBottomCollision model =
+    Tile.isSolid (pinpointTile (heroXStart model) (heroYEnd model))
+        || Tile.isSolid (pinpointTile (heroXEnd model) (heroYEnd model))
 
-        rightBottom =
-            (pinpointTile xEnd yEnd)
-    in
-        (Tile.isSolid leftTop)
-            || (Tile.isSolid rightTop)
-            || (Tile.isSolid leftBottom)
-            || (Tile.isSolid rightBottom)
+
+heroXStart model =
+    model.x - 1
+
+
+heroXEnd model =
+    model.x + (.width Hero.constants) + 1
+
+
+heroYStart model =
+    model.y - 1
+
+
+heroYEnd model =
+    model.y + (.height Hero.constants)
 
 
 pinpointTile : Int -> Int -> Tile.Kind
