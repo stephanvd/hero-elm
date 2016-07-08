@@ -11,7 +11,7 @@ import Keypress
 
 constants : { width : Int, height : Int }
 constants =
-    { width = 64, height = 64 }
+    { width = 32, height = 52 }
 
 
 halfWidth : Int
@@ -80,11 +80,10 @@ updateMovement keys model =
 
 view : Model -> Html a
 view model =
-    div [ class ("hero facing" ++ toString model.direction) ]
+    div [ class "hero" ]
         [ img
-            [ src "/img/character.png"
-            , width constants.width
-            , height constants.height
+            [ src "/img/hero.png"
+            , class ("facing" ++ toString model.direction)
             ]
             []
         ]

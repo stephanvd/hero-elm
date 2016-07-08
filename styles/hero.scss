@@ -2,30 +2,40 @@
 
 .hero {
   position: absolute;
-  top: 224px;
-  left: 224px;
+  top: $cameraHeight / 2 - $heroHeight / 2;
+  left: $cameraWidth / 2 - $heroWidth / 2;
+  width: $heroWidth;
+  height: $heroHeight;
+  overflow: hidden;
 
-  color: white;
-  width: $tileSize;
-  height: $tileSize;
-  font-size: $tileSize;
-  line-height: $tileSize;
-  text-align: center;
-  vertical-align: middle;
+  img {
+    position: absolute;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 
-  &.facingNorth {
-    transform: rotate(0deg);
-  }
 
-  &.facingEast {
-    transform: rotate(90deg);
-  }
+    &.facingNorth {
+      left: -208px;
+      top: -525px;
+    }
 
-  &.facingWest {
-    transform: rotate(-90deg);
-  }
+    &.facingEast {
+      left: -207px;
+      top: -715px;
+    }
 
-  &.facingSouth {
-    transform: rotate(180deg);
+    &.facingWest {
+      left: -209px;
+      top: -587px;
+    }
+
+    &.facingSouth {
+      left: -208px;
+      top: -651px;
+    }
   }
 }
