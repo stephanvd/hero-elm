@@ -40,16 +40,21 @@ o =
     Tile.TreeTop
 
 
+x : Tile.Kind
+x =
+    Tile.Empty
+
+
 
 -- Init
 
 
-layer0 : Model
-layer0 =
-    [ [ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t ]
+groundLayer : Model
+groundLayer =
+    [ [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
     , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
     , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
-    , [ g, g, t, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
     , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
     , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
     , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
@@ -71,11 +76,12 @@ layer0 =
     ]
 
 
-layer1 : Model
-layer1 =
-    [ []
+gameObjects : Model
+gameObjects =
+    [ [ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t ]
     , []
     , [ b, b, o ]
+    , [ x, x, t ]
     ]
 
 
@@ -84,12 +90,12 @@ layer1 =
 
 
 height =
-    64 * (List.length layer0)
+    64 * (List.length groundLayer)
 
 
 width =
     64
-        * ((List.head layer0)
+        * ((List.head groundLayer)
             |> Maybe.withDefault []
             |> List.length
           )

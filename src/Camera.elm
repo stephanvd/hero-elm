@@ -170,7 +170,7 @@ tileKindAt x y =
             y // 64
 
         row =
-            Array.get yCount (Array.fromList Map.Model.layer0)
+            Array.get yCount (Array.fromList Map.Model.gameObjects)
 
         xCount =
             x // 64

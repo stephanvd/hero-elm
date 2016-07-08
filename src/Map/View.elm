@@ -13,9 +13,9 @@ import Hero
 view : Int -> Int -> Hero.Model -> Html.Html a
 view offsetX offsetY hero =
     div []
-        [ viewLayer layer0 offsetX offsetY
+        [ viewLayer groundLayer offsetX offsetY
         , Hero.view hero
-        , viewLayer layer1 offsetX offsetY
+        , viewLayer gameObjects offsetX offsetY
         ]
 
 
