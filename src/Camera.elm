@@ -104,46 +104,67 @@ moveDown keys model =
 
 detectLeftCollision : Model -> Bool
 detectLeftCollision model =
-    Tile.isSolid (pinpointTile (heroXStart model) (heroYStart model))
-        || Tile.isSolid (pinpointTile (heroXStart model) (heroYEnd model))
+    let
+        topLeft =
+            ( model.x - 1, model.y )
+
+        bottomLeft =
+            ( model.x - 1, model.y + (.height Hero.constants) - 1 )
+    in
+        [ topLeft, bottomLeft ]
+            |> List.map tileSolidAt
+            |> List.any (\x -> x == True)
 
 
 detectRightCollision : Model -> Bool
 detectRightCollision model =
-    Tile.isSolid (pinpointTile (heroXEnd model) (heroYStart model))
-        || Tile.isSolid (pinpointTile (heroXEnd model) (heroYEnd model))
+    let
+        topRight =
+            ( model.x + (.width Hero.constants) + 1, model.y )
+
+        bottomRight =
+            ( model.x + (.width Hero.constants) + 1, model.y + (.height Hero.constants) - 1 )
+    in
+        [ topRight, bottomRight ]
+            |> List.map tileSolidAt
+            |> List.any (\x -> x == True)
 
 
 detectTopCollision : Model -> Bool
 detectTopCollision model =
-    Tile.isSolid (pinpointTile (heroXStart model) (heroYStart model))
-        || Tile.isSolid (pinpointTile (heroXEnd model) (heroYStart model))
+    let
+        topLeft =
+            ( model.x, model.y - 1 )
+
+        topRight =
+            ( model.x + (.width Hero.constants) - 1, model.y - 1 )
+    in
+        [ topLeft, topRight ]
+            |> List.map tileSolidAt
+            |> List.any (\x -> x == True)
 
 
 detectBottomCollision : Model -> Bool
 detectBottomCollision model =
-    Tile.isSolid (pinpointTile (heroXStart model) (heroYEnd model))
-        || Tile.isSolid (pinpointTile (heroXEnd model) (heroYEnd model))
+    let
+        bottomLeft =
+            ( model.x, model.y + (.height Hero.constants) + 1 )
+
+        bottomRight =
+            ( model.x + (.width Hero.constants) - 1, model.y + (.height Hero.constants) + 1 )
+    in
+        [ bottomLeft, bottomRight ]
+            |> List.map tileSolidAt
+            |> List.any (\x -> x == True)
 
 
-heroXStart model =
-    model.x - 1
+tileSolidAt : ( Int, Int ) -> Bool
+tileSolidAt ( x, y ) =
+    Tile.isSolid (tileKindAt x y)
 
 
-heroXEnd model =
-    model.x + (.width Hero.constants) + 1
-
-
-heroYStart model =
-    model.y - 1
-
-
-heroYEnd model =
-    model.y + (.height Hero.constants)
-
-
-pinpointTile : Int -> Int -> Tile.Kind
-pinpointTile x y =
+tileKindAt : Int -> Int -> Tile.Kind
+tileKindAt x y =
     let
         yCount =
             y // 64
