@@ -28,12 +28,6 @@ init kind colIndex rowIndex =
     }
 
 
-isSolid : Kind -> Bool
-isSolid kind =
-    [ Tree, Bush ]
-        |> List.member kind
-
-
 view : Model -> Html a
 view model =
     div

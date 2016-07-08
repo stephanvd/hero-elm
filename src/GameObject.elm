@@ -26,6 +26,12 @@ init x y kind =
     }
 
 
+isSolid : Kind -> Bool
+isSolid kind =
+    [ Tree ]
+        |> List.member kind
+
+
 view : Model -> Html a
 view model =
     div

@@ -156,6 +156,7 @@ collidesWith positions =
         (positions
             |> List.map gameObjectsAt
             |> List.concat
+            |> List.filter (\x -> GameObject.isSolid x)
             |> List.isEmpty
         )
 
