@@ -1,14 +1,20 @@
 module Map.Model exposing (..)
 
 import Tile
+import GameObject
+import Dict exposing (Dict)
 
 
 type alias Model =
     List (List Tile.Kind)
 
 
+type alias SpatialHash =
+    Dict ( Int, Int ) (List GameObject.Kind)
 
--- Layer 0
+
+
+-- Ground tiles
 
 
 g : Tile.Kind
@@ -21,35 +27,40 @@ m =
     Tile.Mud
 
 
-t : Tile.Kind
+
+-- Game objects
+
+
+t : GameObject.Kind
 t =
-    Tile.Tree
+    GameObject.Tree
 
 
-
--- Layer 1
-
-
-b : Tile.Kind
+b : GameObject.Kind
 b =
-    Tile.Bush
+    GameObject.Bush
 
 
-o : Tile.Kind
+o : GameObject.Kind
 o =
-    Tile.TreeTop
+    GameObject.TreeTop
+
+
+x : GameObject.Kind
+x =
+    GameObject.Empty
 
 
 
 -- Init
 
 
-layer0 : Model
-layer0 =
-    [ [ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t ]
+groundLayer : Model
+groundLayer =
+    [ [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
     , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
     , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
-    , [ g, g, t, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
     , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
     , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
     , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
@@ -71,25 +82,36 @@ layer0 =
     ]
 
 
-layer1 : Model
-layer1 =
-    [ []
+gameObjects : SpatialHash
+gameObjects =
+    [ [ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t ]
     , []
     , [ b, b, o ]
+    , [ x, x, t ]
     ]
+        |> spatialHash
 
 
+spatialHash : List (List GameObject.Kind) -> SpatialHash
+spatialHash gameObjects =
+    gameObjects
+        |> List.indexedMap (\y r -> r |> List.indexedMap (\x c -> ( ( x, y ), c )))
+        |> List.concat
+        |> List.foldl toHash Dict.empty
 
--- Util
+
+toHash : ( ( Int, Int ), GameObject.Kind ) -> SpatialHash -> SpatialHash
+toHash ( key, elem ) acc =
+    Dict.update key (\v -> Just (elem :: Maybe.withDefault [] v)) acc
 
 
 height =
-    64 * (List.length layer0)
+    64 * (List.length groundLayer)
 
 
 width =
     64
-        * ((List.head layer0)
+        * ((List.head groundLayer)
             |> Maybe.withDefault []
             |> List.length
           )

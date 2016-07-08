@@ -25,6 +25,7 @@
       &.Tree { left: -128px; }
       &.TreeTop { left: -192px; }
       &.Bush { left: -256px; }
+      &.Empty { left: -999px; }
     }
   }
 }

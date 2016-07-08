@@ -10,6 +10,7 @@ type Kind
     | Tree
     | TreeTop
     | Bush
+    | Empty
 
 
 type alias Model =
