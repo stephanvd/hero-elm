@@ -17,25 +17,40 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 
-
     &.facingNorth {
       left: -208px;
       top: -525px;
+
+      &.alternateTrue {
+        left: -400px;
+      }
     }
 
     &.facingEast {
       left: -207px;
       top: -715px;
+
+      &.alternateTrue {
+        left: -400px;
+      }
     }
 
     &.facingWest {
       left: -209px;
       top: -587px;
+
+      &.alternateTrue {
+        left: -400px;
+      }
     }
 
     &.facingSouth {
       left: -208px;
       top: -651px;
+
+      &.alternateTrue {
+        left: -400px;
+      }
     }
   }
 }

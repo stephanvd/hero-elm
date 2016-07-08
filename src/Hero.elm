@@ -43,12 +43,13 @@ type Status
 type alias Model =
     { direction : Direction
     , status : Status
+    , stepLeft : Bool
     }
 
 
 init : Model
 init =
-    { direction = North, status = Living }
+    { direction = North, status = Living, stepLeft = False }
 
 
 
@@ -57,18 +58,57 @@ init =
 
 update : Msg -> Keypress.Model -> Model -> Model
 update msg keys model =
-    model |> (updateMovement keys)
+    model
+        |> (alternateStep msg keys)
+        |> (updateMovement keys)
 
 
 updateMovement : Keypress.Model -> Model -> Model
 updateMovement keys model =
+    model
+        |> (moveLeft keys)
+        |> (moveUp keys)
+        |> (moveRight keys)
+        |> (moveDown keys)
+
+
+alternateStep : Msg -> Keypress.Model -> Model -> Model
+alternateStep msg keys model =
+    case msg of
+        Motion time ->
+            { model | stepLeft = (not model.stepLeft) }
+
+        _ ->
+            model
+
+
+moveLeft : Keypress.Model -> Model -> Model
+moveLeft keys model =
+    if List.member MoveLeft keys then
+        { model | direction = West }
+    else
+        model
+
+
+moveUp : Keypress.Model -> Model -> Model
+moveUp keys model =
+    if List.member MoveUp keys then
+        { model | direction = North }
+    else
+        model
+
+
+moveRight : Keypress.Model -> Model -> Model
+moveRight keys model =
     if List.member MoveRight keys then
         { model | direction = East }
-    else if List.member MoveLeft keys then
-        { model | direction = West }
-    else if List.member MoveUp keys then
-        { model | direction = North }
-    else if List.member MoveDown keys then
+    else
+        model
+
+
+moveDown : Keypress.Model -> Model -> Model
+moveDown keys model =
+    if List.member MoveDown keys then
         { model | direction = South }
     else
         model
@@ -83,7 +123,12 @@ view model =
     div [ class "hero" ]
         [ img
             [ src "/img/hero.png"
-            , class ("facing" ++ toString model.direction)
+            , class
+                ("facing"
+                    ++ toString model.direction
+                    ++ " alternate"
+                    ++ toString model.stepLeft
+                )
             ]
             []
         ]

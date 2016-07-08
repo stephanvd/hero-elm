@@ -13,6 +13,9 @@ update msg model =
         Tick time ->
             tick msg model
 
+        Motion _ ->
+            motion msg model
+
         KeyDown _ ->
             updateKeypress msg model
 
@@ -31,6 +34,11 @@ tick msg model =
       }
     , Cmd.none
     )
+
+
+motion : Msg -> Model -> ( Model, Cmd Msg )
+motion msg model =
+    ( { model | hero = Hero.update msg model.keypress model.hero }, Cmd.none )
 
 
 updateKeypress : Msg -> Model -> ( Model, Cmd Msg )
