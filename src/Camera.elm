@@ -7,8 +7,8 @@ import Map.View as Map
 import Map.Model
 import Keypress
 import Hero
-import Tile
-import Array
+import GameObject
+import Dict
 
 
 constants : { width : Int, height : Int, speed : Int }
@@ -111,9 +111,7 @@ detectLeftCollision model =
         bottomLeft =
             ( model.x - 1, model.y + (.height Hero.constants) - 1 )
     in
-        [ topLeft, bottomLeft ]
-            |> List.map tileSolidAt
-            |> List.any (\x -> x == True)
+        collidesWith [ topLeft, bottomLeft ]
 
 
 detectRightCollision : Model -> Bool
@@ -125,9 +123,7 @@ detectRightCollision model =
         bottomRight =
             ( model.x + (.width Hero.constants) + 1, model.y + (.height Hero.constants) - 1 )
     in
-        [ topRight, bottomRight ]
-            |> List.map tileSolidAt
-            |> List.any (\x -> x == True)
+        collidesWith [ topRight, bottomRight ]
 
 
 detectTopCollision : Model -> Bool
@@ -137,11 +133,9 @@ detectTopCollision model =
             ( model.x, model.y - 1 )
 
         topRight =
-            ( model.x + (.width Hero.constants) - 1, model.y - 1 )
+            ( model.x + (.width Hero.constants), model.y - 1 )
     in
-        [ topLeft, topRight ]
-            |> List.map tileSolidAt
-            |> List.any (\x -> x == True)
+        collidesWith [ topLeft, topRight ]
 
 
 detectBottomCollision : Model -> Bool
@@ -151,38 +145,24 @@ detectBottomCollision model =
             ( model.x, model.y + (.height Hero.constants) + 1 )
 
         bottomRight =
-            ( model.x + (.width Hero.constants) - 1, model.y + (.height Hero.constants) + 1 )
+            ( model.x + (.width Hero.constants), model.y + (.height Hero.constants) + 1 )
     in
-        [ bottomLeft, bottomRight ]
-            |> List.map tileSolidAt
-            |> List.any (\x -> x == True)
+        collidesWith [ bottomLeft, bottomRight ]
 
 
-tileSolidAt : ( Int, Int ) -> Bool
-tileSolidAt ( x, y ) =
-    Tile.isSolid (tileKindAt x y)
+collidesWith : List ( Int, Int ) -> Bool
+collidesWith positions =
+    not
+        (positions
+            |> List.map gameObjectsAt
+            |> List.concat
+            |> List.isEmpty
+        )
 
 
-tileKindAt : Int -> Int -> Tile.Kind
-tileKindAt x y =
-    let
-        yCount =
-            y // 64
-
-        row =
-            Array.get yCount (Array.fromList Map.Model.gameObjects)
-
-        xCount =
-            x // 64
-
-        tile =
-            Array.get xCount
-                (row
-                    |> Maybe.withDefault []
-                    |> Array.fromList
-                )
-    in
-        tile |> Maybe.withDefault Tile.Grass
+gameObjectsAt : ( Int, Int ) -> List (GameObject.Kind)
+gameObjectsAt ( x, y ) =
+    Dict.get ( x // 64, y // 64 ) Map.Model.gameObjects |> Maybe.withDefault []
 
 
 view : Model -> Hero.Model -> Html a
