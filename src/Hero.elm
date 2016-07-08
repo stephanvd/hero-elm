@@ -36,7 +36,8 @@ type Direction
 
 
 type Status
-    = Living
+    = Standing
+    | Moving
     | Dead
 
 
@@ -49,7 +50,7 @@ type alias Model =
 
 init : Model
 init =
-    { direction = North, status = Living, stepLeft = False }
+    { direction = North, status = Standing, stepLeft = False }
 
 
 
@@ -59,8 +60,24 @@ init =
 update : Msg -> Keypress.Model -> Model -> Model
 update msg keys model =
     model
+        |> (updateStatus keys)
         |> (alternateStep msg keys)
         |> (updateMovement keys)
+
+
+updateStatus : Keypress.Model -> Model -> Model
+updateStatus keys model =
+    let
+        movementKeys =
+            [ MoveLeft, MoveUp, MoveRight, MoveDown ]
+
+        isMoving =
+            keys |> List.any (\x -> List.member x movementKeys)
+    in
+        if isMoving then
+            { model | status = Moving }
+        else
+            { model | status = Standing }
 
 
 updateMovement : Keypress.Model -> Model -> Model
@@ -123,12 +140,20 @@ view model =
     div [ class "hero" ]
         [ img
             [ src "/img/hero.png"
-            , class
-                ("facing"
-                    ++ toString model.direction
-                    ++ " alternate"
-                    ++ toString model.stepLeft
-                )
+            , class (directionClass model ++ " " ++ motionClass model)
             ]
             []
         ]
+
+
+directionClass : Model -> String
+directionClass model =
+    "facing" ++ toString model.direction
+
+
+motionClass : Model -> String
+motionClass model =
+    if model.status == Moving then
+        " alternate" ++ toString model.stepLeft
+    else
+        ""
