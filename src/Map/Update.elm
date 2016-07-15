@@ -7,23 +7,24 @@ import Keypress
 
 update : Msg -> Keypress.Model -> Model -> Model
 update msg keys model =
-    let
-        center =
-            model.center
-    in
-        if List.member MoveRight keys then
-            { model | center = { center | x = center.x + 1 } }
-        else if List.member MoveLeft keys then
-            { model | center = { center | x = center.x - 1 } }
-        else if List.member MoveUp keys then
-            { model | center = { center | y = center.y - 1 } }
-        else if List.member MoveDown keys then
-            { model | center = { center | y = center.y + 1 } }
-        else
-            model
+    model
 
 
 
+-- let
+--     center =
+--         model.center
+-- in
+--     if List.member MoveRight keys then
+--         { model | center = { center | x = center.x + 1 } }
+--     else if List.member MoveLeft keys then
+--         { model | center = { center | x = center.x - 1 } }
+--     else if List.member MoveUp keys then
+--         { model | center = { center | y = center.y - 1 } }
+--     else if List.member MoveDown keys then
+--         { model | center = { center | y = center.y + 1 } }
+--     else
+--         model
 -- KeyPress keyCode ->
 --     let
 --         center =

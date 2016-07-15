@@ -1,51 +1,117 @@
 module Map.Model exposing (..)
 
-
-type alias Position =
-    { x : Int
-    , y : Int
-    }
-
-
-type alias Tile =
-    String
-
-
-type alias Grid =
-    List (List Tile)
+import Tile
+import GameObject
+import Dict exposing (Dict)
 
 
 type alias Model =
-    { grid : Grid
-    , center : Position
-    }
+    List (List Tile.Kind)
 
 
-g : Tile
+type alias SpatialHash =
+    Dict ( Int, Int ) (List GameObject.Kind)
+
+
+
+-- Ground tiles
+
+
+g : Tile.Kind
 g =
-    "grass"
+    Tile.Grass
 
 
-w : Tile
-w =
-    "water"
+m : Tile.Kind
+m =
+    Tile.Mud
 
 
-r : Tile
-r =
-    "rock"
+
+-- Game objects
 
 
-init : Model
-init =
-    { grid =
-        [ [ g, g, g, r, g, g, g, g, w, w, w, g, g, g ]
-        , [ g, g, g, r, g, g, g, w, w, w, w, w, g, g ]
-        , [ g, w, g, g, g, g, g, w, w, w, w, w, w, g ]
-        , [ w, w, g, g, g, g, g, g, g, g, g, g, g, r ]
-        , [ w, w, w, g, g, r, r, w, w, w, g, r, r, r ]
-        , [ w, w, w, g, g, r, r, w, w, w, g, r, r, r ]
-        , [ w, w, g, g, g, g, g, w, w, g, g, g, g, r ]
-        ]
-    , center = { x = 3, y = 3 }
-    }
+t : GameObject.Kind
+t =
+    GameObject.Tree
+
+
+b : GameObject.Kind
+b =
+    GameObject.Bush
+
+
+o : GameObject.Kind
+o =
+    GameObject.TreeTop
+
+
+x : GameObject.Kind
+x =
+    GameObject.Empty
+
+
+
+-- Init
+
+
+groundLayer : Model
+groundLayer =
+    [ [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
+    , [ g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
+    , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
+    , [ g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
+    , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, m ]
+    , [ g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, g, g, g, m, m, m, m, m ]
+    , [ g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, g, g, g, m, g, g, m, m ]
+    , [ g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g ]
+    , [ g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g, m, g, g, g, g, g, g ]
+    , [ g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g, m, m, g, g, g, g, g ]
+    ]
+
+
+gameObjects : SpatialHash
+gameObjects =
+    [ [ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t ]
+    , []
+    , [ b, b, o ]
+    , [ x, x, t ]
+    ]
+        |> spatialHash
+
+
+spatialHash : List (List GameObject.Kind) -> SpatialHash
+spatialHash gameObjects =
+    gameObjects
+        |> List.indexedMap (\y r -> r |> List.indexedMap (\x c -> ( ( x, y ), c )))
+        |> List.concat
+        |> List.foldl toHash Dict.empty
+
+
+toHash : ( ( Int, Int ), GameObject.Kind ) -> SpatialHash -> SpatialHash
+toHash ( key, elem ) acc =
+    Dict.update key (\v -> Just (elem :: Maybe.withDefault [] v)) acc
+
+
+height =
+    64 * (List.length groundLayer)
+
+
+width =
+    64
+        * ((List.head groundLayer)
+            |> Maybe.withDefault []
+            |> List.length
+          )

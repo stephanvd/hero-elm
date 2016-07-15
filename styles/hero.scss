@@ -2,30 +2,55 @@
 
 .hero {
   position: absolute;
-  top: $tileSize * 2;
-  left: $tileSize * 2;
+  top: $cameraHeight / 2 - $heroHeight / 2;
+  left: $cameraWidth / 2 - $heroWidth / 2;
+  width: $heroWidth;
+  height: $heroHeight;
+  overflow: hidden;
 
-  color: white;
-  width: $tileSize;
-  height: $tileSize;
-  font-size: $tileSize;
-  line-height: $tileSize;
-  text-align: center;
-  vertical-align: middle;
+  img {
+    position: absolute;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 
-  &.facingNorth {
-    transform: rotate(0deg);
-  }
+    &.facingNorth {
+      left: -208px;
+      top: -525px;
 
-  &.facingEast {
-    transform: rotate(90deg);
-  }
+      &.alternateTrue {
+        left: -400px;
+      }
+    }
 
-  &.facingWest {
-    transform: rotate(-90deg);
-  }
+    &.facingEast {
+      left: -207px;
+      top: -715px;
 
-  &.facingSouth {
-    transform: rotate(180deg);
+      &.alternateTrue {
+        left: -400px;
+      }
+    }
+
+    &.facingWest {
+      left: -209px;
+      top: -587px;
+
+      &.alternateTrue {
+        left: -400px;
+      }
+    }
+
+    &.facingSouth {
+      left: -208px;
+      top: -651px;
+
+      &.alternateTrue {
+        left: -400px;
+      }
+    }
   }
 }

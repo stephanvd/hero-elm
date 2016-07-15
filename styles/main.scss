@@ -1,18 +1,21 @@
 @import './reset.scss';
 
-@import './hero.scss';
+@import './camera.scss';
 @import './map.scss';
+@import './hero.scss';
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: white;
 }
 
 .container {
   position: relative;
-
-  width: 500px;
-  height: 500px;
-  margin: 20px auto;
 }
 
 .debug-model {

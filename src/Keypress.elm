@@ -60,16 +60,40 @@ updateKeyUp key model =
 keyIntent : KeyCode -> Msg
 keyIntent keyCode =
     case keyCode of
-        68 ->
-            MoveRight
+        37 ->
+            MoveLeft
 
         65 ->
             MoveLeft
 
+        72 ->
+            MoveLeft
+
+        38 ->
+            MoveUp
+
         87 ->
             MoveUp
 
+        75 ->
+            MoveUp
+
+        39 ->
+            MoveRight
+
+        68 ->
+            MoveRight
+
+        76 ->
+            MoveRight
+
+        40 ->
+            MoveDown
+
         83 ->
+            MoveDown
+
+        74 ->
             MoveDown
 
         _ ->

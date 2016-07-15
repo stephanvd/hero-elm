@@ -1,27 +1,31 @@
 @import './variables.scss';
 
 .map {
-  position: absolute;
+  position: relative;
+  width: 100%;
+  height: 100%;
 
-  .row {
-    clear: both;
+  .tile {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
 
-    .col {
-      height: $tileSize;
-      width: $tileSize;
-      float: left;
+    img {
+      position: absolute;
+      user-drag: none;
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
 
-      &.grass {
-        background-color: #008800;
-      }
-
-      &.water {
-        background-color: #000088;
-      }
-
-      &.rock {
-        background-color: #888888;
-      }
+      &.Grass { left: 0; }
+      &.Mud { left: -64px; }
+      &.Tree { left: -128px; }
+      &.TreeTop { left: -192px; }
+      &.Bush { left: -256px; }
+      &.Empty { left: -999px; }
     }
   }
 }

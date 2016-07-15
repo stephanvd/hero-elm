@@ -1,0 +1,8 @@
+@import './variables.scss';
+
+.camera {
+  background: black;
+  width: $cameraWidth;
+  height: $cameraHeight;
+  overflow: hidden;
+}

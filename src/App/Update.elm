@@ -3,7 +3,7 @@ module App.Update exposing (..)
 import App.Model exposing (..)
 import App.Msg exposing (..)
 import Hero
-import Map.Update as Map
+import Camera
 import Keypress
 
 
@@ -12,6 +12,9 @@ update msg model =
     case msg of
         Tick time ->
             tick msg model
+
+        Motion _ ->
+            motion msg model
 
         KeyDown _ ->
             updateKeypress msg model
@@ -27,10 +30,15 @@ tick : Msg -> Model -> ( Model, Cmd Msg )
 tick msg model =
     ( { model
         | hero = Hero.update msg model.keypress model.hero
-        , map = Map.update msg model.keypress model.map
+        , camera = Camera.update msg model.keypress model.camera
       }
     , Cmd.none
     )
+
+
+motion : Msg -> Model -> ( Model, Cmd Msg )
+motion msg model =
+    ( { model | hero = Hero.update msg model.keypress model.hero }, Cmd.none )
 
 
 updateKeypress : Msg -> Model -> ( Model, Cmd Msg )

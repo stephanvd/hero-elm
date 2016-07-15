@@ -9,6 +9,7 @@ type Msg
     | KeyDown Keyboard.KeyCode
     | KeyUp Keyboard.KeyCode
     | Tick Time.Time
+    | Motion Time.Time
     | MoveUp
     | MoveDown
     | MoveLeft
